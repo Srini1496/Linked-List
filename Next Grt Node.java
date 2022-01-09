@@ -1,55 +1,55 @@
 /*
-You are given the head of a linked list, and an integer k.
+You are given the head of a linked list with n nodes.
 
-Return the head of the linked list after swapping the values of the kth node from the beginning and the kth node from the end (the list is 1-indexed).
+For each node in the list, find the value of the next greater node. That is, for each node, find the value of the first node that is next to it and has a strictly larger value than it.
+
+Return an integer array answer where answer[i] is the value of the next greater node of the ith node (1-indexed). If the ith node does not have a next greater node, set answer[i] = 0.
 
  
 
 Example 1:
 
 
-Input: head = [1,2,3,4,5], k = 2
-Output: [1,4,3,2,5]
+Input: head = [2,1,5]
+Output: [5,5,0]
 Example 2:
 
-Input: head = [7,9,6,6,7,8,3,0,9,5], k = 5
-Output: [7,9,6,6,8,7,3,0,9,5]
+
+Input: head = [2,7,4,3,5]
+Output: [7,0,5,5,0]
  
 
 Constraints:
 
 The number of nodes in the list is n.
-1 <= k <= n <= 105
-0 <= Node.val <= 100
-*/
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
+1 <= n <= 104
+1 <= Node.val <= 109
  */
 class Solution {
-    public ListNode swapNodes(ListNode head, int k) {
+    public int[] nextLargerNodes(ListNode head) {
+        int n=0;
         ListNode temp=head;
-        for(int i=1;i<k;i++){
+        while(temp!=null){
+            n++;
             temp=temp.next;
         }
-        ListNode swap1=temp;
-        ListNode swap2=head;
-        while(temp.next!=null){
-            swap2=swap2.next;
-            temp=temp.next;
+        int[] res=new int[n];
+        ListNode ptr=head.next;
+        temp=head;
+        int index=0;
+        while(temp!=null){
+            if(ptr!=null && temp.val<ptr.val){
+                res[index++]=ptr.val;                
+                temp=temp.next;
+                ptr=temp;
+            }else if(ptr==null){
+                res[index++]=0;
+                temp=temp.next;
+                ptr=temp;
+            }else
+                ptr=ptr.next;
         }
-        swapValues(swap1,swap2);
-        return head;
-    }
-    public void swapValues(ListNode swap1,ListNode swap2){
-        int val=swap1.val;
-        swap1.val=swap2.val;
-        swap2.val=val;
+        
+        return res;
     }
 }
